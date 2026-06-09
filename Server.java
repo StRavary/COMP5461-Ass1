@@ -196,21 +196,20 @@ public class Server {
          /* Process the accounts until the client disconnects */
          while ((!objNetwork.getClientConnectionStatus().equals("disconnected")))
          { 
-        	 while( (objNetwork.getInBufferStatus().equals("empty"))) // !!!!!!!!!!!!!!!! do nothing: simulates busy-waiting !!!!!!!!!!!!!!!!!!!!!!
+        	 while( (objNetwork.getInBufferStatus().equals("empty")))
                 {
-                   // try
-                   // {
-                   //     Thread.sleep(100);   /* Busy-wait for 100 milliseconds if the network input buffer is empty */
-                   // }
-                   // catch(InterruptedException e)
-                   // {
-                   //     Thread.yield();   /* Yield the cpu if the network input buffer is empty and busyWait for 100ms */
-                   // }
+                    try
+                    {
+                        Thread.sleep(100);   /* Busy-wait for 100 milliseconds if the network input buffer is empty */
+                    }
+                    catch(InterruptedException e)
+                    {
+                        Thread.yield();   /* Yield the cpu if the network input buffer is empty and busyWait for 100ms */
+                    }
                     
                 }     /* Alternatively, busy-wait until the network input buffer is available */    
                         	 
-        	 //if (!objNetwork.getInBufferStatus().equals("empty")) //   !!!!!!!!!!!!!!! could be removed? since if not empty, the code in this condition will be executed !!!!!!!!!!!!!!!!!!!!!!!!!!!
-        	 if (true) //   !!!!!!!!!!!!!!! could be removed? since if not empty, the code in this condition will be executed !!!!!!!!!!!!!!!!!!!!!!!!!!!
+        	 if (!objNetwork.getInBufferStatus().equals("empty"))
         	 {
         		 //System.out.println("\n DEBUG : Server.processTransactions() - transferring in account " + trans.getAccountNumber());
         		 
@@ -247,16 +246,16 @@ public class Server {
                             //System.out.println("\n DEBUG : Server.processTransactions() - Obtaining balance from account" + trans.getAccountNumber());
         				 } 
         		        		 
-        		while( (objNetwork.getOutBufferStatus().equals("empty"))) // !!!!!!!!!!!!!!!! do nothing: simulates busy-waiting !!!!!!!!!!!!!!!!!!!!!!
+        		while( (objNetwork.getOutBufferStatus().equals("full")))
                     {
-                  //     try
-                  // {
-                  //     Thread.sleep(100);   /* Busy-wait for 100 milliseconds if the network input buffer is empty */
-                  // }
-                  // catch(InterruptedException e)
-                  // {
-                  //     Thread.yield();   /* Yield the cpu if the network output buffer is empty and busyWait for 100ms */
-                  // }
+                        try
+                    {
+                        Thread.sleep(100);   /* Busy-wait for 100 milliseconds if the network input buffer is empty */
+                    }
+                    catch(InterruptedException e)
+                    {
+                        Thread.yield();   /* Yield the cpu if the network output buffer is empty and busyWait for 100ms */
+                    }
                     } /* Alternatively,  busy-wait until the network output buffer is available */
                                                            
         		 //System.out.println("\n DEBUG : Server.processTransactions() - transferring out account " + trans.getAccountNumber());

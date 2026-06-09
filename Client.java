@@ -161,9 +161,9 @@ public class Client {
          
          while (i < getNumberOfTransactions())
          {  
-            while( objNetwork.getInBufferStatus().equals("full") ) //do nothing: simulates busy-waiting
+            while( objNetwork.getInBufferStatus().equals("full") )
                 {
-                    //Thread.yield();   /* Yield the cpu if the network input buffer is full */
+                    Thread.yield();   /* Yield the cpu if the network input buffer is full */
                 }     /* Alternatively, busy-wait until the network input buffer is available */
                                              	
             transaction[i].setTransactionStatus("sent");   /* Set current transaction status */
@@ -192,9 +192,9 @@ public class Client {
          
          while (i < getNumberOfTransactions())
          {     
-        	while( objNetwork.getOutBufferStatus().equals("full")) //do nothing: simulates busy-waiting  !!!!!!!!!!! was set to empty
+        	while( objNetwork.getOutBufferStatus().equals("empty"))
                 {
-                    //Thread.yield();   /* Yield the cpu if the network output buffer is empty */
+                    Thread.yield();   /* Yield the cpu if the network output buffer is empty */
                 }  	/* Alternatively, busy-wait until the network output buffer is available */
                                                                         	
             objNetwork.receive(transact);                               	/* Receive updated transaction from the network buffer */
