@@ -196,17 +196,9 @@ public class Server {
          /* Process the accounts until the client disconnects */
          while ((!objNetwork.getClientConnectionStatus().equals("disconnected")))
          { 
-        	 while( (objNetwork.getInBufferStatus().equals("empty")))
+        	 while( (objNetwork.getInBufferStatus().equals("empty")) && (!objNetwork.getClientConnectionStatus().equals("disconnected")) )
                 {
-                    try
-                    {
-                        Thread.sleep(100);   /* Busy-wait for 100 milliseconds if the network input buffer is empty */
-                    }
-                    catch(InterruptedException e)
-                    {
-                        Thread.yield();   /* Yield the cpu if the network input buffer is empty and busyWait for 100ms */
-                    }
-                    
+                    Thread.yield();   /* Yield the cpu if the network input buffer is empty */                    
                 }     /* Alternatively, busy-wait until the network input buffer is available */    
                         	 
         	 if (!objNetwork.getInBufferStatus().equals("empty"))
@@ -248,14 +240,7 @@ public class Server {
         		        		 
         		while( (objNetwork.getOutBufferStatus().equals("full")))
                     {
-                        try
-                    {
-                        Thread.sleep(100);   /* Busy-wait for 100 milliseconds if the network input buffer is empty */
-                    }
-                    catch(InterruptedException e)
-                    {
-                        Thread.yield();   /* Yield the cpu if the network output buffer is empty and busyWait for 100ms */
-                    }
+                        Thread.yield();   /* Yield the cpu if the network output buffer is full */
                     } /* Alternatively,  busy-wait until the network output buffer is available */
                                                            
         		 //System.out.println("\n DEBUG : Server.processTransactions() - transferring out account " + trans.getAccountNumber());

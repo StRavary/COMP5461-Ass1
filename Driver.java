@@ -38,17 +38,16 @@ public class Driver {
         
         // Wait for all to complete
         try {
-            networkThread.join();
-            serverThread.join();
             sendingThread.join();
             receivingThread.join();
+            objNetwork.disconnect(objNetwork.getClientIP());
+            serverThread.join();
+            objNetwork.disconnect(objNetwork.getServerIP());
+            networkThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         
-        // Disconnect and terminate
-        objNetwork.disconnect(objNetwork.getClientIP());
-        objNetwork.disconnect(objNetwork.getServerIP());
         System.out.println("\n Terminating network thread - Client " + objNetwork.getClientConnectionStatus() + " Server " + objNetwork.getServerConnectionStatus());
     	
     }
