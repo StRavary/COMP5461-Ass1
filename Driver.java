@@ -46,9 +46,6 @@ public class Driver {
             networkThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        
-        System.out.println("\n Terminating network thread - Client " + objNetwork.getClientConnectionStatus() + " Server " + objNetwork.getServerConnectionStatus());
-    	
+        }    	
     }
 }
