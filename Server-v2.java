@@ -414,22 +414,39 @@ public class Server extends Thread {
      * @param
      */
       
-    public void run()
-    {   Transactions trans = new Transactions();
-    	 long serverStartTime, serverEndTime;
+// public void run()
+//    {   Transactions trans = new Transactions();
+//    	 long serverStartTime, serverEndTime;
     
-	/* System.out.println("\n DEBUG : Server.run() - starting server thread " + getServerThreadId() + " " + Network.getServerConnectionStatus()); */
+//	/* System.out.println("\n DEBUG : Server.run() - starting server thread " + getServerThreadId() + " " + Network.getServerConnectionStatus()); */
     	
-	Transactions trans = new Transactions();
-    	long serverStartTime, serverEndTime;
+//	Transactions trans = new Transactions();
+//    	long serverStartTime, serverEndTime;
     
-	/* System.out.println("\n DEBUG : Server.run() - starting server thread " + objNetwork.getServerConnectionStatus()); */
+//	/* System.out.println("\n DEBUG : Server.run() - starting server thread " + objNetwork.getServerConnectionStatus()); */
     	
-    	/* .....................................................................................................................................................................................................*/
+//    	/* .....................................................................................................................................................................................................*/
         
-        System.out.println("\n Terminating server thread - " + " Running time " + (serverEndTime - serverStartTime) + " milliseconds");
+//        System.out.println("\n Terminating server thread - " + " Running time " + (serverEndTime - serverStartTime) + " milliseconds");
 	
+//    }
+
+	public void run() //New version, accomodating 2 threads
+    {   
+		Transactions trans = new Transactions();
+
+    	System.out.println("Server " + getServerThreadId() + " starting");
+
+    	long serverStartTime = System.currentTimeMillis();
+
+    	processTransactions(trans);
+
+    	long serverEndTime = System.currentTimeMillis();
+
+    	System.out.println("Server " + getServerThreadId() + " terminating thread - Running time " + (serverEndTime - serverStartTime) + " milliseconds");
     }
+
+	
 }
 
 
