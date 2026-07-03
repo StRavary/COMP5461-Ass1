@@ -19,20 +19,25 @@ public class Driver {
     	
     	 /*******************************************************************************************************************************************
     	 */
-        Network objNetwork = new Network("network");
-        Server objServer = new Server();
+        //Network objNetwork = new Network("network");
+        Server objServer1 = new Server(1);
+        Server objServer2 = new Server(2);
+        
         Client clientSending = new Client("sending");
         Client clientReceiving = new Client("receiving");
         
         // Create all 4 threads
-        Thread networkThread = new Thread(() -> objNetwork.run());
-        Thread serverThread = new Thread(() -> objServer.run());
+        Thread networkThread = new Thread(() -> Network.run());
+        Thread serverThread1 = new Thread(() -> objServer1.run());
+        Thread serverThread2 = new Thread(() -> objServer2.run());
+
         Thread sendingThread = new Thread(() -> clientSending.run());
         Thread receivingThread = new Thread(() -> clientReceiving.run());
         
         // Start all 4
         networkThread.start();
-        serverThread.start();
+        serverThread1.start();
+        serverThread2.start();
         sendingThread.start();
         receivingThread.start();
         
@@ -40,9 +45,10 @@ public class Driver {
         try {
             sendingThread.join();
             receivingThread.join();
-            objNetwork.disconnect(objNetwork.getClientIP());
-            serverThread.join();
-            objNetwork.disconnect(objNetwork.getServerIP());
+            Network.disconnect(Network.getClientIP());
+            serverThread1.join();
+            serverThread2.join();
+            Network.disconnect(Network.getServerIP());
             networkThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
