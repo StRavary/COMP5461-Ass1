@@ -48,7 +48,7 @@ public class Transactions {
      *  Mutator method of Transactions class
      * 
      * @return 
-     * @param accNumber
+     //* @param accNumber
      */
      public void setAccountNumber(String accNumber)
      { 
@@ -70,7 +70,7 @@ public class Transactions {
      *  Mutator method of Transactions class
      * 
      * @return 
-     * @param opType
+     //* @param opType
      */
      public void setOperationType(String opType)
      { 
@@ -114,7 +114,7 @@ public class Transactions {
      *  Mutator method of Transactions class
      * 
      * @return 
-     * @param transBalance
+     //* @param transBalance
      */
      public void setTransactionBalance(double transBalance)
      { 
@@ -163,7 +163,7 @@ public class Transactions {
      public void setTransactionStatus(String transStatus)
      { 
          transactionError = transStatus;
-     }
+     }//potential bug, transactionError should be transactionStatus!!!!!!!!!!!!!!!!!!!
      
     /**
      *  Create a String representation based on the Transactions Object
