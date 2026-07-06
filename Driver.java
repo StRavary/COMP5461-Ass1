@@ -20,8 +20,8 @@ public class Driver {
     	 /*******************************************************************************************************************************************
     	 */
         Network objNetwork = new Network();
-        Server objServer1 = new Server(1);
-        Server objServer2 = new Server(2);
+        Server objServer1 = new Server("1");
+        Server objServer2 = new Server("2");
         
         Client clientSending = new Client("sending");
         Client clientReceiving = new Client("receiving");
