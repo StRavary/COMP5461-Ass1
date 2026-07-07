@@ -1,3 +1,4 @@
+import java.util.concurrent.*;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,17 +11,23 @@
  */
 public class Network extends Thread {
     
-    private static int maxNbPackets;                           /* Maximum number of simultaneous transactions handled by the network buffer */
-    private static int inputIndexClient, inputIndexServer, outputIndexServer, outputIndexClient; /* Network buffer indices for accessing the input buffer (inputIndexClient, outputIndexServer) and output buffer (inputIndexServer, outputIndexClient) */
-    private static String clientIP;                            /* IP number of the client application*/
-    private static String serverIP;                            /* IP number of the server application */
-    private static int portID;                                 /* Port ID of the client application */
-    private static String clientConnectionStatus;              /* Client connection status - connected, disconnected, idle */
-    private static String serverConnectionStatus;              /* Server connection status - connected, disconnected, idle */
-    private static Transactions inComingPacket[];              /* Incoming network buffer */
-    private static Transactions outGoingPacket[];              /* Outgoing network buffer */
-    private static String inBufferStatus, outBufferStatus;     /* Current status of the network buffers - normal, full, empty */
-    private static String networkStatus;                       /* Network status - active, inactive */
+    private static int maxNbPackets;                           // Maximum number of simultaneous transactions handled by the network buffer
+    private static int inputIndexClient, inputIndexServer, outputIndexServer, outputIndexClient; // Network buffer indices for accessing the input buffer (inputIndexClient, outputIndexServer) and output buffer (inputIndexServer, outputIndexClient)
+    private static String clientIP;                            // IP number of the client application
+    private static String serverIP;                            // IP number of the server application
+    private static int portID;                                 // Port ID of the client application
+    private static String clientConnectionStatus;              // Client connection status - connected, disconnected, idle
+    private static String serverConnectionStatus;              // Server connection status - connected, disconnected, idle
+    private static Transactions inComingPacket[];              // Incoming network buffer
+    private static Transactions outGoingPacket[];              // Outgoing network buffer
+    private static String inBufferStatus, outBufferStatus;     // Current status of the network buffers - normal, full, empty
+    private static String networkStatus;                       // Network status - active, inactive
+    private static Semaphore inBufferEmptySemaphore;                // Semaphore for controlling access to the incoming network buffer
+    private static Semaphore inBufferFullSemaphore;                 // Semaphore for controlling access to the incoming network buffer
+    private static Semaphore outBufferFullSemaphore;                // Semaphore for controlling
+    private static Semaphore outBufferEmptySemaphore;               // Semaphore for controlling access to the outgoing network buffer
+    private static Semaphore inBufferMutex;                    // Mutex for controlling access to the incoming network buffer
+    private static Semaphore outBufferMutex;                   // Mutex for controlling access to the outgoing network buffer 
        
     /** 
      * Constructor of the Network class
@@ -39,6 +46,12 @@ public class Network extends Thread {
          serverConnectionStatus = "idle";
          portID = 0;
          maxNbPackets = 10;
+         inBufferEmptySemaphore = new Semaphore(maxNbPackets);
+         inBufferFullSemaphore = new Semaphore(0);
+         inBufferMutex = new Semaphore(1);
+         outBufferFullSemaphore = new Semaphore(maxNbPackets);
+         outBufferEmptySemaphore = new Semaphore(0);
+         outBufferMutex = new Semaphore(1);
          inComingPacket = new Transactions[maxNbPackets];
          outGoingPacket = new Transactions[maxNbPackets];
          for (i=0; i < maxNbPackets; i++)
@@ -350,7 +363,8 @@ public class Network extends Thread {
      */
         public static boolean send(Transactions inPacket)
         {
-        	
+                  inBufferEmptySemaphore.acquire(); /* Acquire the empty semaphore for the input buffer */
+                  inBufferMutex.acquire(); /* Acquire the mutex for the input buffer */
         		  inComingPacket[inputIndexClient].setAccountNumber(inPacket.getAccountNumber());
         		  inComingPacket[inputIndexClient].setOperationType(inPacket.getOperationType());
         		  inComingPacket[inputIndexClient].setTransactionAmount(inPacket.getTransactionAmount());
@@ -362,6 +376,10 @@ public class Network extends Thread {
         		   //System.out.println("\n DEBUG : Network.send() - account number " + inComingPacket[inputIndexClient].getAccountNumber());
             
         		  setinputIndexClient(((getinputIndexClient( ) + 1) % getMaxNbPackets ()));	/* Increment the input buffer index  for the client */
+
+                  inBufferMutex.release(); /* Release the mutex for the input buffer */
+                  inBufferEmptySemaphore.release(); /* Release the empty semaphore for the input buffer */
+
         		  /* Check if input buffer is full */
         		  if (getinputIndexClient() == getoutputIndexServer())
         		  {	
