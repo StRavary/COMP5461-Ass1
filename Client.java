@@ -179,11 +179,15 @@ public class Client extends Thread {
      */
      public void receiveTransactions(Transactions transact)
      {
+
          int i = 0;     /* Index of transaction array */
          
          while (i < getNumberOfTransactions())
-         {   
-        	 while (Network.getOutBufferStatus().equals("empty"))
+         {
+             System.out.println("Receiving transaction " + i + "/" + getNumberOfTransactions()); //DEBUG
+
+
+             while (Network.getOutBufferStatus().equals("empty"))
         	 {
         		 Thread.yield(); 	/* Yield the cpu if the network output buffer is full */
         		 
