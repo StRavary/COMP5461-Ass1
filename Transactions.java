@@ -162,7 +162,7 @@ public class Transactions {
      */
      public void setTransactionStatus(String transStatus)
      { 
-         transactionError = transStatus;
+         transactionStatus = transStatus;
      }//potential bug, transactionError should be transactionStatus!!!!!!!!!!!!!!!!!!!
      
     /**

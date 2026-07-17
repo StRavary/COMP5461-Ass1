@@ -360,7 +360,6 @@ public class Network extends Thread {
             // inputIndexClient);
             // System.out.println("\n DEBUG : Network.send() - account number " +
             // inComingPacket[inputIndexClient].getAccountNumber());
-            
 
             setinputIndexClient(((getinputIndexClient() + 1) % getMaxNbPackets())); /*
                                                                                      * Increment the input buffer index
@@ -513,7 +512,14 @@ public class Network extends Thread {
      */
     public static boolean transferIn(Transactions inPacket) {
         try {
-            inBufferFullSemaphore.acquire(); /* Acquire the full semaphore for the input buffer */
+
+            while (!inBufferFullSemaphore.tryAcquire(5, TimeUnit.MILLISECONDS)) {
+                if (Network.getClientConnectionStatus().equals("disconnected")) { // no ; here!
+                    return false;
+                }
+            }
+
+           
             inBufferMutex.acquire(); /* Acquire the mutex for the input buffer */
             inPacket.setAccountNumber(inComingPacket[outputIndexServer].getAccountNumber());
             inPacket.setOperationType(inComingPacket[outputIndexServer].getOperationType());
