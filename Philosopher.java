@@ -35,9 +35,9 @@ public class Philosopher extends BaseThread
 			// ...
 			System.out.println("Philosopher " + getTID() + " has started eating.");
 			Status status = Status.eating;
-			yield();
+			Thread.yield();
 			sleep((long)(Math.random() * TIME_TO_WASTE));
-			yield();
+			Thread.yield();
 			System.out.println("Philosopher " + getTID() + " is done eating.");
 			status = Status.idle;
 			// ...
@@ -65,9 +65,9 @@ public class Philosopher extends BaseThread
 		{
 			System.out.println("Philosopher " + getTID() + " has started thinking.");
 			Status status = Status.thinking;
-			yield();
+			Thread.yield();
 			sleep((long)(Math.random() * TIME_TO_WASTE));
-			yield();
+			Thread.yield();
 			System.out.println("Philosopher " + getTID() + " is done thinking.");
 			status = Status.idle;
 		}
@@ -92,11 +92,11 @@ public class Philosopher extends BaseThread
 		// ...
 		System.out.println("Philosopher " + getTID() + " has started talking.");
 		Status status = Status.talking;
-		yield();
+		Thread.yield();
 
 		saySomething();
 
-		yield();
+		Thread.yield();
 		System.out.println("Philosopher " + getTID() + " is done talking.");
 		status = Status.idle;
 		// ...
@@ -129,10 +129,12 @@ public class Philosopher extends BaseThread
 				// ...
 
 				talk();
+
+				DiningPhilosophers.soMonitor.endTalk();
 				// ...
 			}
 
-			yield();
+			Thread.yield();
 		}
 	} // run()
 
