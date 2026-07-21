@@ -47,6 +47,19 @@ public class DiningPhilosophers
 			 * or the default if no arguments supplied.
 			 */
 			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			//Check command line arguments and parseInt to set the number of philosophers
+			try {
+				iPhilosophers = argv.length == 0 ? DEFAULT_NUMBER_OF_PHILOSOPHERS : Integer.parseInt(argv[0]);
+				if (iPhilosophers <= 0) {
+					System.err.println(argv[0] + " is not a decimal positive integer \n \n Usage: java DiningPhilosophers [NUMBER_OF_PHILOSOPHERS]");
+					System.exit(1);
+				}
+			}
+			catch (NumberFormatException e) {
+				System.err.println(argv[0] + " is not a decimal positive integer \n \n Usage: java DiningPhilosophers [NUMBER_OF_PHILOSOPHERS]");
+				System.exit(1);
+			}
+			
 
 			// Make the monitor aware of how many philosophers there are
 			soMonitor = new Monitor(iPhilosophers);

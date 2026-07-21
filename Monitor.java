@@ -11,6 +11,10 @@ public class Monitor
 	 * Data members
 	 * ------------
 	 */
+	private int chopsticks[];
+	private int nPhilosophers;
+	
+
 
 
 	/**
@@ -19,6 +23,8 @@ public class Monitor
 	public Monitor(int piNumberOfPhilosophers)
 	{
 		// TODO: set appropriate number of chopsticks based on the # of philosophers
+		this.chopsticks = new int[piNumberOfPhilosophers];
+		this.nPhilosophers = piNumberOfPhilosophers;
 	}
 
 	/*
@@ -34,6 +40,7 @@ public class Monitor
 	public synchronized void pickUp(final int piTID)
 	{
 		// ...
+		if()
 	}
 
 	/**

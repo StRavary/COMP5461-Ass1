@@ -6,12 +6,19 @@ import common.BaseThread;
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
+enum Status {eating, thinking, talking, idle};
+
 public class Philosopher extends BaseThread
 {
 	/**
 	 * Max time an action can take (in milliseconds)
 	 */
 	public static final long TIME_TO_WASTE = 1000;
+
+	/**
+	 * Current activity state of this philosopher.
+	 */
+	private Status status = Status.idle;
 
 	/**
 	 * The act of eating.
@@ -26,7 +33,13 @@ public class Philosopher extends BaseThread
 		try
 		{
 			// ...
+			System.out.println("Philosopher " + getTID() + " has started eating.");
+			Status status = Status.eating;
+			yield();
 			sleep((long)(Math.random() * TIME_TO_WASTE));
+			yield();
+			System.out.println("Philosopher " + getTID() + " is done eating.");
+			status = Status.idle;
 			// ...
 		}
 		catch(InterruptedException e)
@@ -48,6 +61,22 @@ public class Philosopher extends BaseThread
 	public void think()
 	{
 		// ...
+		try
+		{
+			System.out.println("Philosopher " + getTID() + " has started thinking.");
+			Status status = Status.thinking;
+			yield();
+			sleep((long)(Math.random() * TIME_TO_WASTE));
+			yield();
+			System.out.println("Philosopher " + getTID() + " is done thinking.");
+			status = Status.idle;
+		}
+		catch(InterruptedException e)
+		{
+			System.err.println("Philosopher.think():");
+			DiningPhilosophers.reportException(e);
+			System.exit(1);
+		}
 	}
 
 	/**
@@ -61,9 +90,15 @@ public class Philosopher extends BaseThread
 	public void talk()
 	{
 		// ...
+		System.out.println("Philosopher " + getTID() + " has started talking.");
+		Status status = Status.talking;
+		yield();
 
 		saySomething();
 
+		yield();
+		System.out.println("Philosopher " + getTID() + " is done talking.");
+		status = Status.idle;
 		// ...
 	}
 
@@ -87,9 +122,12 @@ public class Philosopher extends BaseThread
 			 * A decision is made at random whether this particular
 			 * philosopher is about to say something terribly useful.
 			 */
-			if(true == false)
+			if(status == Status.idle)
 			{
 				// Some monitor ops down here...
+				DiningPhilosophers.soMonitor.requestTalk();
+				// ...
+
 				talk();
 				// ...
 			}
