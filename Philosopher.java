@@ -34,7 +34,7 @@ public class Philosopher extends BaseThread
 		{
 			// ...
 			System.out.println("Philosopher " + getTID() + " has started eating.");
-			Status status = Status.eating;
+			status = Status.eating;
 			Thread.yield();
 			sleep((long)(Math.random() * TIME_TO_WASTE));
 			Thread.yield();
@@ -64,7 +64,7 @@ public class Philosopher extends BaseThread
 		try
 		{
 			System.out.println("Philosopher " + getTID() + " has started thinking.");
-			Status status = Status.thinking;
+			status = Status.thinking;
 			Thread.yield();
 			sleep((long)(Math.random() * TIME_TO_WASTE));
 			Thread.yield();
@@ -91,7 +91,7 @@ public class Philosopher extends BaseThread
 	{
 		// ...
 		System.out.println("Philosopher " + getTID() + " has started talking.");
-		Status status = Status.talking;
+		status = Status.talking;
 		Thread.yield();
 
 		saySomething();
