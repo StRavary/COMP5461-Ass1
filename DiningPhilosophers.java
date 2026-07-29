@@ -51,12 +51,12 @@ public class DiningPhilosophers
 			try {
 				iPhilosophers = argv.length == 0 ? DEFAULT_NUMBER_OF_PHILOSOPHERS : Integer.parseInt(argv[0]);
 				if (iPhilosophers <= 0) {
-					System.err.println(argv[0] + " is not a decimal positive integer \n \n Usage: java DiningPhilosophers [NUMBER_OF_PHILOSOPHERS]");
+					System.err.println(argv[0] + " is not a decimal positive integer \n \n Usage: java DiningPhilosophers.java [NUMBER_OF_PHILOSOPHERS]");
 					System.exit(1);
 				}
 			}
 			catch (NumberFormatException e) {
-				System.err.println(argv[0] + " is not a decimal positive integer \n \n Usage: java DiningPhilosophers [NUMBER_OF_PHILOSOPHERS]");
+				System.err.println(argv[0] + " is not a decimal positive integer \n \n Usage: java DiningPhilosophers.java [NUMBER_OF_PHILOSOPHERS]");
 				System.exit(1);
 			}
 			
