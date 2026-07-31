@@ -1,0 +1,18 @@
+Task 1: Philosopher Class
+
+The Philosopher class was fully implemented by completing the eat(), think(), talk(), and run() methods. A Status enum was added to keep track of each philosopher’s current activity.
+The eating, thinking, and talking actions now include appropriate output messages, thread yielding, and random sleep intervals to simulate real philosopher behavior.
+The run() method was updated to manage the full philosopher cycle of picking up chopsticks, eating, putting down chopsticks, thinking, and requesting permission to talk through the monitor.
+
+Task 2: Monitor
+
+The Monitor class was implemented using Java synchronization mechanisms (synchronized, wait(), and notifyAll()) to coordinate access to shared resources.
+A chopstick tracking array was added to monitor whether each chopstick is available or in use, allowing philosophers to only pick up chopsticks when both required ones are available.
+The pickUp() and putDown() methods manage chopstick allocation and release, while requestTalk() and endTalk() ensure that only one philosopher can talk at a time.
+This implementation provides safe synchronization and prevents conflicts between philosopher threads.
+
+Task 3: Variable Number of Philosophers
+
+The DiningPhilosophers class was modified to allow the number of philosophers to be provided through a command-line argument. The program now checks whether an argument was provided, 
+uses the default number if none is given, and validates that the provided value is a positive integer. Invalid input is handled by displaying an error message and usage instructions. 
+This allows the simulation to dynamically create the requested number of philosopher threads instead of being limited to the default value.
