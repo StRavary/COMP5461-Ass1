@@ -33,11 +33,20 @@ public class Philosopher extends BaseThread
 		try
 		{
 			// ...
-			System.out.println("Philosopher " + getTID() + " has started eating.");
-			status = Status.eating;
+
+			// Prints when the philosopher begins eating and updates their state
+			// The status variable allows the program to know the philosopher's current activity
+
+			// Allows another thread to run before continuing
 			Thread.yield();
+
+			// Simulates the time spent eating by sleeping for a random duration
 			sleep((long)(Math.random() * TIME_TO_WASTE));
+
+			// Allows other philosophers to execute after eating.
 			Thread.yield();
+
+			// Prints when eating has finished and resets the philosopher state
 			System.out.println("Philosopher " + getTID() + " is done eating.");
 			status = Status.idle;
 			// ...
@@ -61,14 +70,23 @@ public class Philosopher extends BaseThread
 	public void think()
 	{
 		// ...
+
+		// Simulate the philosopher thinking by changing their status, waiting (sleep) for a random amount of time, and printing messages
 		try
 		{
 			System.out.println("Philosopher " + getTID() + " has started thinking.");
+
 			status = Status.thinking;
+
 			Thread.yield();
+
+			// Random sleep represents time spent thinking
 			sleep((long)(Math.random() * TIME_TO_WASTE));
+
 			Thread.yield();
+
 			System.out.println("Philosopher " + getTID() + " is done thinking.");
+
 			status = Status.idle;
 		}
 		catch(InterruptedException e)
@@ -90,10 +108,13 @@ public class Philosopher extends BaseThread
 	public void talk()
 	{
 		// ...
+
+		// Update the philosopher's state to talking and controls order of actions while a philosopher is speaking
 		System.out.println("Philosopher " + getTID() + " has started talking.");
 		status = Status.talking;
 		Thread.yield();
 
+		// Prints a random phrase from list.
 		saySomething();
 
 		Thread.yield();
@@ -124,12 +145,15 @@ public class Philosopher extends BaseThread
 			 */
 			if(status == Status.idle)
 			{
+				// Before talking, the philosopher requests permission from the monitor So only one philosopher can talk at the same time
+
 				// Some monitor ops down here...
 				DiningPhilosophers.soMonitor.requestTalk();
 				// ...
 
 				talk();
 
+				// Releases the talking lock so another philosopher can talk
 				DiningPhilosophers.soMonitor.endTalk();
 				// ...
 			}
